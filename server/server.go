@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/go-chi/chi/v5"
@@ -11,6 +12,7 @@ import (
 	"github.com/go-chi/cors"
 	"github.com/go-chi/httplog"
 	"github.com/go-playground/validator/v10"
+	"github.com/joho/godotenv"
 	types "github.com/unexpectedtokens/api-tester/common"
 	"github.com/unexpectedtokens/api-tester/server/data"
 	"github.com/unexpectedtokens/api-tester/server/db"
@@ -18,13 +20,16 @@ import (
 )
 
 func RunServer() {
+	godotenv.Load()
+
 	logger := httplog.NewLogger("quiktest-api", httplog.Options{
 		Concise: false,
 	})
 
 	validate := validator.New(validator.WithRequiredStructEnabled())
 
-	connection, err := db.NewConnection()
+	dbConnectionString := os.Getenv("MONGO_CONNECTIONSTRING")
+	connection, err := db.NewConnection(dbConnectionString)
 
 	if err != nil {
 		panic(err)
