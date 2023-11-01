@@ -1,0 +1,24 @@
+{{define "index"}}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/public/css/output.css" />
+    <title>Quiktest - {{template "title" .}}</title>
+  </head>
+  <body class="bg-slate-950">
+    <nav class="py-10">
+      <div class="container mx-auto flex justify-between">
+        <h1 class="text-white text-xl font-bold">Quiktest</h1>
+        <div class="flex text-white gap-10 text-sm">
+          <a href="/testreports">Test reports</a>
+          <a href="/testcases">Testcases</a>
+        </div>
+      </div>
+    </nav>
+    <main class="container mx-auto max-w-4xl">{{template "main" .}}</main>
+  </body>
+</html>
+{{end}}

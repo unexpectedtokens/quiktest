@@ -1,0 +1,36 @@
+{{define "title"}}asd{{end}} {{define "main"}}
+<h3 class="text-white mb-5">{{.TestReport.Title}}</h3>
+<div class="flex flex-col gap-5">
+  {{ range .TestcaseResults}}
+  <div class="p-5 bg-slate-900 rounded">
+    <div class="flex justify-between items-center">
+      <p class="text-white flex justify-start items-center">
+        <span class="bg-emerald-300 p-2 mr-5 rounded text-xs text-emerald-600">
+          {{.Case.Request.Method}}
+        </span>
+        <span class="text-sm text-slate-300 p-2 bg-slate-800 rounded">
+          {{ .Case.Request.Route}}
+        </span>
+      </p>
+      <p class="text-lg">
+        {{if len .ErrMessages}}
+        <span class="bg-red-300 p-2 text-red-600 rounded">Fail</span>
+        {{else}}
+        <span class="bg-emerald-300 text-emerald-600 p-2 rounded">Pass</span>
+        {{end}}
+      </p>
+    </div>
+    <p class="mt-5 text-white">{{ .Case.Title}}</p>
+
+    <div class="bg-slate-800 p-2 mt-5 rounded text-slate-300">
+      <h5 class="border-b-2 border-b-slate-700">Errors:</h5>
+      <ul class="pl-2">
+        {{ range .ErrMessages }}
+        <li>{{.}}</li>
+        {{end}}
+      </ul>
+    </div>
+  </div>
+  {{end}}
+</div>
+{{end}}
