@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/rs/zerolog"
-	types "github.com/unexpectedtokens/api-tester/common"
+	types "github.com/unexpectedtokens/api-tester/common_types"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )

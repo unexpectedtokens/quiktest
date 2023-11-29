@@ -5,14 +5,15 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/httplog"
-	types "github.com/unexpectedtokens/api-tester/common"
+	types "github.com/unexpectedtokens/api-tester/common_types"
 	"github.com/unexpectedtokens/api-tester/server/data"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func GetByIDHandler[T types.DocumentModel](db *mongo.Database, collection string) http.HandlerFunc {
+func GetByIDHandler[T types.DocumentModel](db *mongo.Database, model T) http.HandlerFunc {
+	collectionName := model.GetCollectionName()
 	return func(w http.ResponseWriter, r *http.Request) {
 		reqLog := httplog.LogEntry(r.Context())
 
@@ -25,7 +26,7 @@ func GetByIDHandler[T types.DocumentModel](db *mongo.Database, collection string
 			return
 		}
 
-		document, err := data.GetDocument[T](db, collection, bson.M{"_id": objectId}, r.Context())
+		document, err := data.GetDocument[T](db, collectionName, bson.M{"_id": objectId}, r.Context())
 		if err != nil {
 
 			if err == mongo.ErrNoDocuments {

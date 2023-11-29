@@ -1,18 +1,18 @@
 package client
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 	"time"
 
+	quikclient "github.com/unexpectedtokens/api-tester/client/api_client"
 	"github.com/unexpectedtokens/api-tester/client/report"
 	"github.com/unexpectedtokens/api-tester/client/test_request"
-	types "github.com/unexpectedtokens/api-tester/common"
+	types "github.com/unexpectedtokens/api-tester/common_types"
 )
 
-const DEFAULT_URL = "http://localhost:8080/testcases"
+const DEFAULT_URL = "http://localhost:8080"
 
 // TODO: Create a pipeline out of this
 
@@ -45,12 +45,18 @@ func RunTests(cases []types.TestCase, url string) (testCaseResults []types.TestC
 }
 
 func RunClient() {
-	err := test_request.Ping(DEFAULT_URL)
+
+	quikClient := quikclient.QuikClient{
+		API_URL:    DEFAULT_URL,
+		HTTPClient: http.Client{},
+	}
+
+	err := quikClient.Ping()
 	if err != nil {
 		panic(err)
 	}
-	resp, err := http.Get(DEFAULT_URL)
 
+	cases, err := quikClient.GetTestcases()
 	if err != nil {
 		panic(err)
 	}
@@ -58,14 +64,6 @@ func RunClient() {
 	result := types.TestReport{
 		Title:             fmt.Sprintf("Testresult from %s", time.Now().Format(time.Layout)),
 		TotalTestDuration: time.Hour * 3,
-	}
-
-	cases := []types.TestCase{}
-
-	err = json.NewDecoder(resp.Body).Decode(&cases)
-
-	if err != nil {
-		panic(err)
 	}
 
 	var testCaseResults []types.TestCaseResult

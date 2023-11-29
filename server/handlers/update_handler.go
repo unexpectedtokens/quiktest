@@ -8,7 +8,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/httplog"
 	"github.com/go-playground/validator/v10"
-	types "github.com/unexpectedtokens/api-tester/common"
+	types "github.com/unexpectedtokens/api-tester/common_types"
 	"github.com/unexpectedtokens/api-tester/server/data"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"

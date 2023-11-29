@@ -3,7 +3,7 @@ package conditions
 import (
 	"fmt"
 
-	types "github.com/unexpectedtokens/api-tester/common"
+	types "github.com/unexpectedtokens/api-tester/common_types"
 )
 
 func Validate(c *types.Condition, respBody map[string]string, key string) error {

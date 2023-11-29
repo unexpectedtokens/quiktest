@@ -8,7 +8,7 @@ import (
 	"strconv"
 
 	"github.com/go-playground/validator/v10"
-	types "github.com/unexpectedtokens/api-tester/common"
+	types "github.com/unexpectedtokens/api-tester/common_types"
 	"github.com/unexpectedtokens/api-tester/server/data"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"

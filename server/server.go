@@ -13,10 +13,10 @@ import (
 	"github.com/go-chi/httplog"
 	"github.com/go-playground/validator/v10"
 	"github.com/joho/godotenv"
-	types "github.com/unexpectedtokens/api-tester/common"
-	"github.com/unexpectedtokens/api-tester/server/data"
+	types "github.com/unexpectedtokens/api-tester/common_types"
 	"github.com/unexpectedtokens/api-tester/server/db"
 	"github.com/unexpectedtokens/api-tester/server/handlers"
+	"github.com/unexpectedtokens/api-tester/server/router"
 )
 
 func RunServer() {
@@ -58,33 +58,28 @@ func RunServer() {
 	}))
 
 	// Register middleware
-	r.Use(httplog.RequestLogger(logger, []string{"/ping", "/public"}))
+	r.Use(httplog.RequestLogger(logger, []string{"/ping"}))
 	r.Use(middleware.Heartbeat("/ping"))
 	r.Use(middleware.Recoverer, middleware.RequestID)
 
 	// Register api endpoints
 	r.Route("/api", func(r chi.Router) {
 		r.Use(middleware.SetHeader("Content-Type", "application/json"))
+
+		// Testgroups
+		router.ImplementGenericCrud(r, db, validate, "testgroups", types.TestGroup{})
+
 		// Testcases
-		r.Get("/testcases", handlers.GetListHandler[types.TestCase](db, data.TESTCASES_COLLECTION))
+		router.ImplementGenericCrud(r, db, validate, "testcases", types.TestCase{})
 
-		r.Post("/testcases", handlers.PostDocumentHandler[types.TestCase](db, validate))
-
-		r.Delete("/testcases/{id}", handlers.DeleteDocumentByIDHandler[types.TestCase](db, data.TESTCASES_COLLECTION))
-
-		r.Put("/testcases/{id}", handlers.UpdateDocumentHandler[types.TestCase](db, validate))
+		r.Get("/testcases/group/{groupname}", handlers.GetByGroupHandler(db))
 
 		// Testreports
-		r.Get("/testreports", handlers.GetListHandler[types.TestReport](db, data.TESTREPORTS_COLLECTION))
-
-		r.Post("/testreports", handlers.PostDocumentHandler[types.TestReport](db, validate))
+		router.ImplementGenericCrud(r, db, validate, "testreports", types.TestReport{})
 
 		r.Get("/testreports/{id}/results", handlers.GetTestCaseResultsByReportId(db))
 
 		r.Post("/testreports/results", handlers.PostDocumentHandler[types.TestCaseResult](db, validate))
-
-		r.Get("/testreports/{id}", handlers.GetByIDHandler[types.TestReport](db, data.TESTREPORTS_COLLECTION))
-
 	})
 
 	logger.Info().Msg("Registered the following routes")

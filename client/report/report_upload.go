@@ -8,11 +8,11 @@ import (
 	"net/http"
 	"strings"
 
-	types "github.com/unexpectedtokens/api-tester/common"
+	types "github.com/unexpectedtokens/api-tester/common_types"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-const API_URL = "http://localhost:8080"
+const API_URL = "http://localhost:8080/api"
 
 func CreateTestReport(report types.TestReport) (string, error) {
 	jsonOutput, err := json.Marshal(report)

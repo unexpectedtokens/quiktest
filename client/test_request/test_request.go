@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/unexpectedtokens/api-tester/client/conditions"
-	types "github.com/unexpectedtokens/api-tester/common"
+	types "github.com/unexpectedtokens/api-tester/common_types"
 )
 
 func SendTestRequest(client *http.Client, testCase types.TestCase) types.TestCaseResult {
