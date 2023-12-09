@@ -2,14 +2,18 @@ package quikclient
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 )
 
 func (q QuikClient) Ping() error {
-	resp, err := q.HTTPClient.Get(q.API_URL)
+	url := fmt.Sprintf("%s/ping", q.API_URL)
+
+	log.Printf("Pinging Quiktest api at %s", url)
+	resp, err := q.HTTPClient.Get(url)
 
 	if err != nil {
-		return fmt.Errorf("error pinging %s: %s", q.API_URL, err.Error())
+		return fmt.Errorf("error pinging %s: %s", url, err.Error())
 	}
 
 	if resp.StatusCode != http.StatusOK {

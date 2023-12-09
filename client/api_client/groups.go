@@ -3,14 +3,13 @@ package quikclient
 import (
 	"encoding/json"
 	"fmt"
-	"path"
 
 	types "github.com/unexpectedtokens/api-tester/common_types"
 )
 
-func (q QuikClient) Groups() ([]types.TestGroup, error) {
+func (q QuikClient) groups() ([]types.TestGroup, error) {
 
-	resp, err := q.HTTPClient.Get(path.Join(q.API_URL, "/api/testgroups"))
+	resp, err := q.HTTPClient.Get(q.formatUrl("/testgroups"))
 
 	if err != nil {
 		return nil, fmt.Errorf("error getting groups: %w", err)

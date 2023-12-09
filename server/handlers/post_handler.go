@@ -45,6 +45,7 @@ func PostDocumentHandler[T types.DocumentModel](db *mongo.Database, validate *va
 			return
 		}
 
+		fmt.Println(id)
 		jsonSend[types.CreatedIdResponse](types.CreatedIdResponse{
 			ID: id,
 		}, w)

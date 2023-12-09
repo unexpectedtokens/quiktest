@@ -31,7 +31,7 @@ type TestCaseResult struct {
 	ActualReturnCode int                `bson:"actualReturnCode" json:"actualReturnCode"`
 	ResponseTime     time.Duration      `bson:"responseTime" json:"responseTime"`
 	ResponseBody     string             `bson:"responseBody" json:"responseBody"`
-	TestReportId     primitive.ObjectID `bson:"testReportId" json:"testReportId"`
+	TestReportId     primitive.ObjectID `bson:"testReportId" json:"testReportId" validate:"required"`
 	ErrMessages      []string           `bson:"errorMessages" json:"errorMessages"`
 }
 

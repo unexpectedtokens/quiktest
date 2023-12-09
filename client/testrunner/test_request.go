@@ -1,4 +1,4 @@
-package test_request
+package testrunner
 
 import (
 	"encoding/json"
@@ -10,7 +10,7 @@ import (
 	types "github.com/unexpectedtokens/api-tester/common_types"
 )
 
-func SendTestRequest(client *http.Client, testCase types.TestCase) types.TestCaseResult {
+func (t *TestRunner) SendTestRequest(testCase types.TestCase) *types.TestCaseResult {
 	now := time.Now()
 
 	testCaseResult := types.TestCaseResult{
@@ -22,13 +22,13 @@ func SendTestRequest(client *http.Client, testCase types.TestCase) types.TestCas
 
 	if err != nil {
 		testCaseResult.AddErrMsg(fmt.Sprintf("Error constructing request: %s", err.Error()))
-		return testCaseResult
+		return &testCaseResult
 	}
 
-	resp, err := client.Do(req)
+	resp, err := t.TestClient.Do(req)
 	if err != nil {
 		testCaseResult.AddErrMsg(fmt.Sprintf("error sending request: %s", err.Error()))
-		return testCaseResult
+		return &testCaseResult
 	}
 
 	timeToRespond := time.Since(now)
@@ -58,5 +58,5 @@ func SendTestRequest(client *http.Client, testCase types.TestCase) types.TestCas
 		}
 	}
 
-	return testCaseResult
+	return &testCaseResult
 }
