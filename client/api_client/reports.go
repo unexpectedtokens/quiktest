@@ -53,7 +53,6 @@ func (q QuikClient) CreateTestCaseResultsFromChannel(resultsChannel <-chan *type
 		testCaseResult.TestReportId = objectId
 		jsonPayload, err := json.Marshal(testCaseResult)
 
-		fmt.Println(string(jsonPayload))
 		if err != nil {
 			log.Printf("[ERROR]: generating json payload: %s\n", err.Error())
 			continue

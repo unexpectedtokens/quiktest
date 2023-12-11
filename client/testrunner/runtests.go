@@ -69,6 +69,7 @@ func mergeChannels(chans ...<-chan *types.TestCaseResult) <-chan *types.TestCase
 	}()
 	return out
 }
+
 func gen(tCases []types.TestCase) <-chan types.TestCase {
 	out := make(chan types.TestCase)
 	go func() {
@@ -79,6 +80,7 @@ func gen(tCases []types.TestCase) <-chan types.TestCase {
 	}()
 	return out
 }
+
 func (t *TestRunner) RunTestPipeline(groupedCases *quikclient.GroupedCases) <-chan *types.TestCaseResult {
 
 	chans := []<-chan *types.TestCaseResult{}
