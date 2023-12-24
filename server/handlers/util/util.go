@@ -1,4 +1,4 @@
-package handlers
+package hUtils
 
 import (
 	"encoding/json"
@@ -9,7 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func jsonSend[T any](res T, rw http.ResponseWriter) {
+func SendJSON[T any](res T, rw http.ResponseWriter) {
 	binResponse, err := json.Marshal(res)
 
 	if err != nil {
@@ -21,8 +21,8 @@ func jsonSend[T any](res T, rw http.ResponseWriter) {
 	rw.Write(binResponse)
 }
 
-func getObjectIdFromRequest(r *http.Request, param string) (primitive.ObjectID, error) {
-	id := chi.URLParam(r, "id")
+func ObjectIdFromRequest(r *http.Request, param string) (primitive.ObjectID, error) {
+	id := chi.URLParam(r, param)
 	reqLog := httplog.LogEntry(r.Context())
 
 	objectId, err := primitive.ObjectIDFromHex(id)

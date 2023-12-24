@@ -21,10 +21,6 @@ func (T TestReport) GetCollectionName() string {
 
 var filterableTestReportProps *[]string = &[]string{}
 
-func (T TestReport) FilterableProps() *[]string {
-	return filterableTestReportProps
-}
-
 type TestCaseResult struct {
 	ID               primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
 	Case             TestCase           `bson:"case" json:"case"`
@@ -33,6 +29,14 @@ type TestCaseResult struct {
 	ResponseBody     string             `bson:"responseBody" json:"responseBody"`
 	TestReportId     primitive.ObjectID `bson:"testReportId" json:"testReportId" validate:"required"`
 	ErrMessages      []string           `bson:"errorMessages" json:"errorMessages"`
+}
+
+var filterableTestCaseResultProps *[]string = &[]string{
+	"testReportId",
+}
+
+func FilterableTestCaseResultProps() *[]string {
+	return filterableTestCaseResultProps
 }
 
 func (T *TestCaseResult) AddErrMsg(msg string) {

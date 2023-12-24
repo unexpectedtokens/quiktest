@@ -1,4 +1,4 @@
-package data
+package dao
 
 import (
 	"context"
@@ -8,9 +8,9 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func GetDocument[T types.DocumentModel](db *mongo.Database, collection string, query interface{}, ctx context.Context) (T, error) {
+func (d *DAO[T]) GetDocument(collection string, query interface{}, ctx context.Context) (types.DocumentModel, error) {
 	var document T
-	err := db.Collection(collection).FindOne(ctx, query).Decode(&document)
+	err := d.db.Collection(collection).FindOne(ctx, query).Decode(&document)
 
 	if err != nil {
 		return document, fmt.Errorf("error finding one document: %w", err)
@@ -19,8 +19,8 @@ func GetDocument[T types.DocumentModel](db *mongo.Database, collection string, q
 	return document, nil
 }
 
-func GetDocuments[T types.DocumentModel](db *mongo.Database, collection string, query interface{}, ctx context.Context) ([]T, error) {
-	cursor, err := db.Collection(collection).Find(ctx, query)
+func (d *DAO[T]) GetDocuments(collection string, query interface{}, ctx context.Context) ([]T, error) {
+	cursor, err := d.db.Collection(collection).Find(ctx, query)
 
 	documents := []T{}
 	if err != nil {

@@ -20,6 +20,6 @@ var filterableTestcaseProps *[]string = &[]string{
 	"testGroup",
 }
 
-func (T TestCase) FilterableProps() *[]string {
+func FilterableTestcaseProps() *[]string {
 	return filterableTestcaseProps
 }

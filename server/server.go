@@ -13,10 +13,8 @@ import (
 	"github.com/go-chi/httplog"
 	"github.com/go-playground/validator/v10"
 	"github.com/joho/godotenv"
-	types "github.com/unexpectedtokens/api-tester/common_types"
 	"github.com/unexpectedtokens/api-tester/server/db"
 	"github.com/unexpectedtokens/api-tester/server/handlers"
-	"github.com/unexpectedtokens/api-tester/server/router"
 )
 
 func RunServer() {
@@ -62,28 +60,10 @@ func RunServer() {
 	r.Use(middleware.Heartbeat("/ping"))
 	r.Use(middleware.Recoverer, middleware.RequestID)
 
-	// Register api endpoints
-	r.Route("/api", func(r chi.Router) {
-		r.Use(middleware.SetHeader("Content-Type", "application/json"))
-
-		// Testgroups
-		router.ImplementGenericCrud(r, db, validate, "testgroups", types.TestGroup{})
-
-		// Testcases
-		router.ImplementGenericCrud(r, db, validate, "testcases", types.TestCase{})
-
-		r.Get("/testcases/group/{groupname}", handlers.GetByGroupHandler(db))
-
-		// Testreports
-		router.ImplementGenericCrud(r, db, validate, "testreports", types.TestReport{})
-
-		r.Get("/testreports/{id}/results", handlers.GetTestCaseResultsByReportId(db))
-
-		r.Post("/testreports/results", handlers.PostDocumentHandler[types.TestCaseResult](db, validate))
-	})
+	register := handlers.NewRegister(db, r, validate)
+	register.RegisterHandlers()
 
 	logger.Info().Msg("Registered the following routes")
-
 	chi.Walk(r, func(method, route string, handler http.Handler, middlewares ...func(http.Handler) http.Handler) error {
 		route = strings.Replace(route, "/*/", "/", -1)
 		fmt.Printf("%s %s\n", method, route)

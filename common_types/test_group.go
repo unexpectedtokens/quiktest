@@ -11,8 +11,10 @@ func (T TestGroup) GetCollectionName() string {
 	return "test_groups"
 }
 
-var filterableTestGroupProps *[]string = &[]string{}
+var filterableTestGroupProps *[]string = &[]string{
+	"title",
+}
 
-func (T TestGroup) FilterableProps() *[]string {
+func FilterableTestGroupProps() *[]string {
 	return filterableTestGroupProps
 }
